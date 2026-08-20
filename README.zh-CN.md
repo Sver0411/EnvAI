@@ -5,6 +5,9 @@
 [English README](README.md) · [架构说明](docs/architecture.md) · [真实 AI 配置](docs/real-ai-setup.md) · [生产检查清单](docs/production-readiness-checklist.md)
 
 [![CI](https://github.com/Sver0411/EnvAI/actions/workflows/ci.yml/badge.svg)](https://github.com/Sver0411/EnvAI/actions/workflows/ci.yml)
+[![Docker Compose](https://img.shields.io/badge/docker--compose-2496ED?logo=docker&logoColor=white)](https://docs.docker.com/compose/)
+[![Nginx](https://img.shields.io/badge/nginx-reverse%20proxy-009639?logo=nginx&logoColor=white)](https://nginx.org/)
+[![Python](https://img.shields.io/badge/python-3.11-3776AB?logo=python&logoColor=white)](https://www.python.org/)
 
 EnvAI 将目标企业资料、项目文件、专业依据和文档模板组织成可追溯的环保咨询文档生产流程。系统把企业信息结构化抽取、多租户知识库、RAG 检索、AI 章节写作、专业质量审查和 Word/PDF 导出整合到一个本地优先的 SaaS 工作台中。
 

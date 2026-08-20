@@ -5,6 +5,9 @@
 [中文文档](README.zh-CN.md) · [Architecture](docs/architecture.md) · [Real AI setup](docs/real-ai-setup.md) · [Production checklist](docs/production-readiness-checklist.md)
 
 [![CI](https://github.com/Sver0411/EnvAI/actions/workflows/ci.yml/badge.svg)](https://github.com/Sver0411/EnvAI/actions/workflows/ci.yml)
+[![Docker Compose](https://img.shields.io/badge/docker--compose-2496ED?logo=docker&logoColor=white)](https://docs.docker.com/compose/)
+[![Nginx](https://img.shields.io/badge/nginx-reverse%20proxy-009639?logo=nginx&logoColor=white)](https://nginx.org/)
+[![Python](https://img.shields.io/badge/python-3.11-3776AB?logo=python&logoColor=white)](https://www.python.org/)
 
 EnvAI turns company-provided environmental information, source files, professional references, and document templates into traceable consulting drafts. It combines structured extraction, a tenant-aware knowledge base, hybrid RAG retrieval, AI-assisted chapter writing, professional review, and Word/PDF export in one local-first SaaS workspace.
 
