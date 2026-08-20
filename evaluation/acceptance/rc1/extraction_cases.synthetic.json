@@ -2,14 +2,14 @@
   {
     "id": "synthetic-materials-001",
     "ground_truth": {
-      "company_name": "苏州A新材料有限公司",
+      "company_name": "示例新材料有限公司",
       "products": [{"name": "水性涂料", "annual_capacity": "1000", "unit": "t/a"}],
       "equipment": [{"name": "分散机", "quantity": "2", "unit": "台"}],
       "raw_materials": [{"name": "甲苯", "annual_usage": "35", "annual_usage_unit": "t/a", "max_storage": "5", "storage_unit": "t"}],
       "environmental_facilities": []
     },
     "prediction": {
-      "company_name": "苏州A新材料有限公司",
+      "company_name": "示例新材料有限公司",
       "products": [{"name": "水性涂料", "annual_capacity": "1000", "unit": "t/a"}],
       "equipment": [{"name": "分散机", "quantity": "2", "unit": "台"}],
       "raw_materials": [{"name": "甲苯", "annual_usage": "35", "annual_usage_unit": "t/a", "max_storage": "5", "storage_unit": "t"}],

@@ -99,8 +99,8 @@ class OpenAICompatibleProvider(AIProvider):
                     timeout=self.timeout,
                     # Local development environments may export malformed proxy
                     # variables (for example an IPv6 NO_PROXY token).  The
-                    # OpenCode endpoint is reachable directly, so avoid letting
-                    # those variables break URL parsing before the request is sent.
+                    # The configured endpoint is reached directly, so avoid
+                    # letting those variables break URL parsing before sending.
                     trust_env=False,
                 )
                 response.raise_for_status()

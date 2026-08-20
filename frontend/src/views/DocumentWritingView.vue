@@ -106,7 +106,7 @@ function cleanDraft(value: SectionDraft | null) { return value ? { ...value, war
 async function selectSection(snapshot: SectionInstance) { selectedSection.value = snapshot; preflight.value = null; draft.value = null; const templateSection = template.value?.sections.find((item) => item.id === snapshot.template_section_id); if (instance.value && templateSection) { const [view, state] = await Promise.all([getSection(instance.value.id, templateSection.id), preflightSection(instance.value.id, templateSection.id)]); draft.value = cleanDraft(view.draft); content.value = view.draft?.content || ''; preflight.value = state } }
 async function check() { if (!instance.value || !selectedSection.value) return; loading.value = true; try { preflight.value = await preflightSection(instance.value.id, selectedSection.value.template_section_id) } finally { loading.value = false } }
 function manualFieldPlaceholder(field: string) {
-  return ({ company_name: '例如：江苏清源新材料有限公司', project_address: '例如：江苏省苏州市工业园区', industry_category: '例如：化学原料和化学制品制造业', land_area: '例如：12000 m²', building_area: '例如：8600 m²', products: '例如：水性丙烯酸树脂、水性聚氨酯树脂', annual_output: '例如：20000 t/a', production_process: '简要描述主要生产工艺和污染环节' } as Record<string, string>)[field] || '请填写已确认的信息'
+  return ({ company_name: '例如：某某环保科技有限公司', project_address: '例如：某省某市环保产业园', industry_category: '例如：化学原料和化学制品制造业', land_area: '例如：12000 m²', building_area: '例如：8600 m²', products: '例如：示例产品A、示例产品B', annual_output: '例如：20000 t/a', production_process: '简要描述主要生产工艺和污染环节' } as Record<string, string>)[field] || '请填写已确认的信息'
 }
 async function openCollectDialog() {
   if (!preflight.value) await check()

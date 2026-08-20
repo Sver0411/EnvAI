@@ -324,7 +324,7 @@ def validate_numbers(content: str, context: RetrievalContext) -> list[str]:
         if value in expected or value in {"0", "1", "2", "3"}:
             continue
         # 电话、编号和长串识别码不是需要业务核对的数量。旧逻辑会把
-        # 0512-68880001 拆成多个数字，最终在页面上显示出“000”等无意义提示。
+        # 示例联系电话等连续数字应保持为一个完整值，避免被拆成无意义提示。
         nearby = content[max(0, match.start() - 1):min(len(content), match.end() + 1)]
         if "-" in nearby or len(value) >= 6 or (value.startswith("0") and len(value) > 1 and not value.startswith("0.")):
             continue

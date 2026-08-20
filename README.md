@@ -199,7 +199,7 @@ EnvAI starts with deterministic Mock providers so the UI, tests, parsing, and wo
 ~~~env
 AI_PROVIDER=openai_compatible
 AI_BASE_URL=https://your-gateway.example/v1
-AI_API_KEY=replace-with-secret
+AI_API_KEY=REPLACE_WITH_YOUR_AI_API_KEY
 AI_MODEL=your-chat-model
 AI_TIMEOUT=60
 AI_MAX_RETRIES=2
@@ -213,7 +213,7 @@ Set AI_JSON_MODE=false for gateways that do not reliably implement response_form
 ~~~env
 EMBEDDING_PROVIDER=openai_compatible
 EMBEDDING_BASE_URL=https://your-embedding-gateway.example/v1
-EMBEDDING_API_KEY=replace-with-secret
+EMBEDDING_API_KEY=REPLACE_WITH_YOUR_EMBEDDING_API_KEY
 EMBEDDING_MODEL=your-embedding-model
 EMBEDDING_DIMENSION=1024
 EMBEDDING_BATCH_SIZE=32
@@ -228,7 +228,7 @@ ollama pull bge-m3
 ~~~env
 EMBEDDING_PROVIDER=openai_compatible
 EMBEDDING_BASE_URL=http://127.0.0.1:11434/v1
-EMBEDDING_API_KEY=ollama
+EMBEDDING_API_KEY=LOCAL_ONLY_PLACEHOLDER
 EMBEDDING_MODEL=bge-m3
 EMBEDDING_DIMENSION=1024
 ~~~

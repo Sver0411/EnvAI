@@ -12,15 +12,15 @@ jobs:
         image: pgvector/pgvector:pg16
         env:
           POSTGRES_USER: envai
-          POSTGRES_PASSWORD: envai_dev_password
+          POSTGRES_PASSWORD: ci_placeholder_password
           POSTGRES_DB: envai_test
         ports: ["5433:5432"]
         options: >-
           --health-cmd "pg_isready -U envai -d envai_test"
           --health-interval 5s --health-timeout 5s --health-retries 10
     env:
-      DATABASE_URL: postgresql+psycopg://envai:envai_dev_password@localhost:5433/envai_test
-      SECRET_KEY: ci-only-secret-key-at-least-32-characters-long
+      DATABASE_URL: postgresql+psycopg://envai:ci_placeholder_password@localhost:5433/envai_test
+      SECRET_KEY: ci-placeholder-secret-key-for-tests-only-32
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5

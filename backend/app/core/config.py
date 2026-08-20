@@ -71,10 +71,9 @@ class Settings(BaseSettings):
     ai_model: str | None = None
     ai_timeout: float = Field(default=30.0, gt=0, le=300)
     ai_max_retries: int = Field(default=2, ge=0, le=5)
-    # Some OpenAI-compatible gateways (notably OpenCode Go + DeepSeek V4
-    # Flash) return an empty JSON object when response_format=json_object is
-    # sent. The prompt still requires JSON, and the provider parser accepts
-    # fenced JSON when this compatibility switch is disabled.
+    # Some OpenAI-compatible gateways return an empty JSON object when
+    # response_format=json_object is sent. The prompt still requires JSON,
+    # and the provider parser accepts fenced JSON when this switch is disabled.
     ai_json_mode: bool = True
 
     # Phase 4 knowledge base / embedding. 默认使用本地确定性 Mock，不依赖外部服务。

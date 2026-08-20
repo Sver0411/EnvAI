@@ -11,11 +11,11 @@ OpenAI-compatible 接口接入模型，接口可以是云端服务，也可以�
 ```env
 AI_PROVIDER=openai_compatible
 AI_BASE_URL=https://your-llm-endpoint.example/v1
-AI_API_KEY=replace-with-secret
+AI_API_KEY=REPLACE_WITH_YOUR_AI_API_KEY
 AI_MODEL=your-chat-model
 AI_TIMEOUT=60
 AI_MAX_RETRIES=2
-# OpenCode Go + DeepSeek V4 Flash: set false for gateway compatibility.
+# Set false for gateways that do not reliably support response_format.
 AI_JSON_MODE=false
 ```
 
@@ -30,7 +30,7 @@ AI_JSON_MODE=false
 ```env
 EMBEDDING_PROVIDER=openai_compatible
 EMBEDDING_BASE_URL=https://your-embedding-endpoint.example/v1
-EMBEDDING_API_KEY=replace-with-secret
+EMBEDDING_API_KEY=REPLACE_WITH_YOUR_EMBEDDING_API_KEY
 EMBEDDING_MODEL=your-embedding-model
 EMBEDDING_DIMENSION=1024
 EMBEDDING_BATCH_SIZE=32
@@ -45,7 +45,7 @@ EMBEDDING_BATCH_SIZE=32
 ```env
 EMBEDDING_PROVIDER=openai_compatible
 EMBEDDING_BASE_URL=http://127.0.0.1:11434/v1
-EMBEDDING_API_KEY=ollama
+EMBEDDING_API_KEY=LOCAL_ONLY_PLACEHOLDER
 EMBEDDING_MODEL=bge-m3
 EMBEDDING_DIMENSION=1024
 ```

@@ -9,7 +9,8 @@ from docx.oxml import OxmlElement
 from docx.oxml.ns import qn
 
 
-OUT = Path("/Users/mac/Documents/EnvAI/demo_assets")
+# Keep generated demo files portable and independent of the developer's local path.
+OUT = Path(__file__).resolve().parents[1] / "demo_assets"
 OUT.mkdir(parents=True, exist_ok=True)
 
 
@@ -106,15 +107,15 @@ def add_table(doc, headers, rows):
 
 
 def build_company_profile():
-    doc = base_doc("江苏清源新材料有限公司 环保资料汇编")
+    doc = base_doc("示例环保科技有限公司 环保资料汇编")
     doc.add_heading("一、项目基本信息", level=1)
     add_kv_table(doc, [
-        ("项目名称", "年产 2 万吨水性树脂及配套环保设施提升项目"),
-        ("建设单位", "江苏清源新材料有限公司"),
-        ("统一社会信用代码", "91320500DEMO20260001"),
-        ("项目地址", "江苏省苏州市吴中区环保产业园清源路 18 号"),
+        ("项目名称", "示例树脂生产及配套环保设施提升项目"),
+        ("建设单位", "示例环保科技有限公司"),
+        ("统一社会信用代码", "DEMO-CREDIT-2026-0001"),
+        ("项目地址", "示例省示例市环保产业园示例路 18 号"),
         ("行业类别", "C2651 初级形态塑料及合成树脂制造"),
-        ("联系人", "张工，0512-68880001"),
+        ("联系人", "示例联系人，400-000-0000"),
         ("占地与建筑", "占地 18,600 m²，建筑面积 12,400 m²"),
     ])
     doc.add_heading("二、生产与污染治理概况", level=1)
@@ -137,7 +138,7 @@ def build_company_profile():
 
 
 def build_risk_inventory():
-    doc = base_doc("江苏清源新材料有限公司 环境风险与应急资源清单")
+    doc = base_doc("示例环保科技有限公司 环境风险与应急资源清单")
     doc.add_heading("一、主要环境风险物质", level=1)
     add_table(doc, ["物质", "最大储存量", "储存位置", "主要风险", "防控措施"], [
         ("丙烯酸", "2.0 t", "甲类仓库 A 区", "腐蚀、聚合放热", "冷却、禁火、围堰、泄漏收集"),
