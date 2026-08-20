@@ -1,0 +1,10 @@
+{
+  "cases": 1,
+  "entity_precision": 1.0,
+  "entity_recall": 1.0,
+  "entity_f1": 1.0,
+  "company_identity_accuracy": 1.0,
+  "numeric_exact_match": 1.0,
+  "unit_accuracy": 1.0,
+  "unsupported_extracted_fact_count": 0
+}

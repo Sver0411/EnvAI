@@ -1,0 +1,35 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+*.egg-info/
+
+# Node
+node_modules/
+dist/
+coverage/
+*.tsbuildinfo
+
+# Env / secrets
+.env
+*.local
+
+# Runtime data
+uploads/
+*.log
+
+# OS / IDE
+.DS_Store
+.idea/
+.vscode/
+backend/.env
+frontend/.env
+*.env.production
+deploy/tls/
+backups/
+*.dump
+*.dump.sha256
+*.tar.gz
+*.tar.gz.sha256

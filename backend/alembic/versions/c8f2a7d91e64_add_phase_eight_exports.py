@@ -1,0 +1,37 @@
+"""add phase eight report snapshots and exports
+
+Revision ID: c8f2a7d91e64
+Revises: b3e1f8d52a64
+Create Date: 2026-08-19
+"""
+
+from alembic import op
+import sqlalchemy as sa
+from sqlalchemy.dialects import postgresql
+
+
+revision = "c8f2a7d91e64"
+down_revision = "b3e1f8d52a64"
+branch_labels = None
+depends_on = None
+
+jsonb = postgresql.JSONB(astext_type=sa.Text())
+
+
+def upgrade() -> None:
+    op.create_table("report_templates", sa.Column("id", sa.Integer(), primary_key=True), sa.Column("name", sa.String(255), nullable=False), sa.Column("code", sa.String(128), nullable=False), sa.Column("document_type", sa.String(64), nullable=False), sa.Column("version", sa.String(32), server_default="v1", nullable=False), sa.Column("status", sa.String(32), server_default="active", nullable=False), sa.Column("original_file_name", sa.String(255), nullable=False), sa.Column("storage_path", sa.String(512), nullable=False), sa.Column("sha256", sa.String(64), nullable=False), sa.Column("file_size", sa.Integer(), server_default="0", nullable=False), sa.Column("engine", sa.String(32), server_default="docxtpl", nullable=False), sa.Column("created_by", sa.Integer(), sa.ForeignKey("users.id", ondelete="CASCADE"), nullable=False), sa.Column("created_at", sa.DateTime(timezone=True), server_default=sa.text("now()"), nullable=False), sa.Column("updated_at", sa.DateTime(timezone=True), server_default=sa.text("now()"), nullable=False), sa.UniqueConstraint("code", "version", name="uq_report_template_code_version"), sa.CheckConstraint("status IN ('active', 'inactive', 'archived')", name="ck_report_templates_status"))
+    op.create_index("ix_report_templates_id", "report_templates", ["id"])
+    op.create_table("report_template_mappings", sa.Column("id", sa.Integer(), primary_key=True), sa.Column("report_template_id", sa.Integer(), sa.ForeignKey("report_templates.id", ondelete="RESTRICT"), nullable=False), sa.Column("document_template_id", sa.Integer(), sa.ForeignKey("document_templates.id", ondelete="RESTRICT"), nullable=False), sa.Column("section_mappings", jsonb), sa.Column("created_at", sa.DateTime(timezone=True), server_default=sa.text("now()"), nullable=False), sa.UniqueConstraint("report_template_id", "document_template_id", name="uq_report_template_document_template"))
+    op.create_table("report_snapshots", sa.Column("id", sa.Integer(), primary_key=True), sa.Column("document_instance_id", sa.Integer(), sa.ForeignKey("document_instances.id", ondelete="CASCADE"), nullable=False), sa.Column("snapshot_number", sa.Integer(), nullable=False), sa.Column("status", sa.String(32), server_default="formal", nullable=False), sa.Column("document_title", sa.String(255), nullable=False), sa.Column("template_id", sa.Integer(), sa.ForeignKey("document_templates.id", ondelete="RESTRICT"), nullable=False), sa.Column("template_version", sa.String(32), nullable=False), sa.Column("quality_review_run_id", sa.Integer(), sa.ForeignKey("professional_review_runs.id", ondelete="SET NULL")), sa.Column("snapshot_content", jsonb, nullable=False), sa.Column("content_hash", sa.String(64), nullable=False), sa.Column("metadata", jsonb), sa.Column("created_by", sa.Integer(), sa.ForeignKey("users.id", ondelete="CASCADE"), nullable=False), sa.Column("created_at", sa.DateTime(timezone=True), server_default=sa.text("now()"), nullable=False), sa.UniqueConstraint("document_instance_id", "snapshot_number", name="uq_report_snapshot_number"), sa.CheckConstraint("status IN ('formal', 'draft')", name="ck_report_snapshots_status"))
+    op.create_index("ix_report_snapshots_id", "report_snapshots", ["id"]); op.create_index("ix_report_snapshots_document_instance_id", "report_snapshots", ["document_instance_id"])
+    op.create_table("report_export_jobs", sa.Column("id", sa.Integer(), primary_key=True), sa.Column("report_snapshot_id", sa.Integer(), sa.ForeignKey("report_snapshots.id", ondelete="CASCADE"), nullable=False), sa.Column("report_template_id", sa.Integer(), sa.ForeignKey("report_templates.id", ondelete="RESTRICT"), nullable=False), sa.Column("status", sa.String(32), server_default="pending", nullable=False), sa.Column("requested_formats", jsonb, nullable=False), sa.Column("docx_status", sa.String(32), server_default="pending", nullable=False), sa.Column("pdf_status", sa.String(32), server_default="not_requested", nullable=False), sa.Column("exporter_version", sa.String(32), server_default="docx_exporter_v1", nullable=False), sa.Column("render_manifest", jsonb), sa.Column("error_message", sa.String(500)), sa.Column("started_by", sa.Integer(), sa.ForeignKey("users.id", ondelete="CASCADE"), nullable=False), sa.Column("started_at", sa.DateTime(timezone=True), server_default=sa.text("now()"), nullable=False), sa.Column("completed_at", sa.DateTime(timezone=True)), sa.CheckConstraint("status IN ('pending', 'rendering', 'docx_completed', 'converting_pdf', 'completed', 'partial', 'failed')", name="ck_report_export_jobs_status"))
+    op.create_index("ix_report_export_jobs_id", "report_export_jobs", ["id"]); op.create_index("ix_report_export_jobs_report_snapshot_id", "report_export_jobs", ["report_snapshot_id"])
+    op.create_table("export_artifacts", sa.Column("id", sa.Integer(), primary_key=True), sa.Column("export_job_id", sa.Integer(), sa.ForeignKey("report_export_jobs.id", ondelete="CASCADE"), nullable=False), sa.Column("format", sa.String(16), nullable=False), sa.Column("storage_path", sa.String(512), nullable=False), sa.Column("file_name", sa.String(255), nullable=False), sa.Column("mime_type", sa.String(128), nullable=False), sa.Column("file_size", sa.Integer(), nullable=False), sa.Column("sha256", sa.String(64), nullable=False), sa.Column("created_at", sa.DateTime(timezone=True), server_default=sa.text("now()"), nullable=False), sa.UniqueConstraint("export_job_id", "format", name="uq_export_artifact_format"), sa.CheckConstraint("format IN ('docx', 'pdf')", name="ck_export_artifacts_format"))
+    op.create_index("ix_export_artifacts_id", "export_artifacts", ["id"]); op.create_index("ix_export_artifacts_export_job_id", "export_artifacts", ["export_job_id"])
+    op.create_table("report_figures", sa.Column("id", sa.Integer(), primary_key=True), sa.Column("document_instance_id", sa.Integer(), sa.ForeignKey("document_instances.id", ondelete="CASCADE"), nullable=False), sa.Column("project_file_id", sa.Integer(), sa.ForeignKey("project_files.id", ondelete="RESTRICT"), nullable=False), sa.Column("section_instance_id", sa.Integer(), sa.ForeignKey("document_section_instances.id", ondelete="SET NULL")), sa.Column("caption", sa.String(500), nullable=False), sa.Column("sort_order", sa.Integer(), server_default="0", nullable=False), sa.Column("width_inches", sa.Float(), server_default="5.8", nullable=False), sa.Column("enabled", sa.Boolean(), server_default=sa.true(), nullable=False), sa.Column("created_by", sa.Integer(), sa.ForeignKey("users.id", ondelete="CASCADE"), nullable=False), sa.Column("created_at", sa.DateTime(timezone=True), server_default=sa.text("now()"), nullable=False))
+    op.create_index("ix_report_figures_id", "report_figures", ["id"]); op.create_index("ix_report_figures_document_instance_id", "report_figures", ["document_instance_id"])
+
+
+def downgrade() -> None:
+    for table in ("report_figures", "export_artifacts", "report_export_jobs", "report_snapshots", "report_template_mappings", "report_templates"):
+        op.drop_table(table)

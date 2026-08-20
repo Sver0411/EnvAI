@@ -1,0 +1,12 @@
+{
+  "cases": 1,
+  "fact_accuracy": 1.0,
+  "numeric_accuracy": 1.0,
+  "citation_accuracy": 1.0,
+  "missing_information_accuracy": 1.0,
+  "professional_acceptability": 1.0,
+  "unsupported_claim_count": 0,
+  "case_contamination_count": 0,
+  "fabricated_citation_count": 0,
+  "internal_source_marker_count": 0
+}

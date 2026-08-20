@@ -1,0 +1,22 @@
+release_candidate: EnvAI MVP RC1
+application_version: "0.1.0"
+git_commit: "UNCOMMITTED_WORKSPACE—replace with immutable commit before external trial"
+database_revision: "f10b8c7d3e42"
+build_time: "2026-08-20T00:00:00+08:00"
+parser_versions:
+  pdf: "PyMuPDF parser"
+  docx: "python-docx parser"
+  excel: "openpyxl/xlrd parser"
+  ocr: "configured provider dependent"
+extraction_schema_version: "phase-3"
+chunker_version: "structure-v1"
+embedding_provider: "mock by local default; replace for release"
+embedding_model: "mock-hash-v1 by local default; replace for release"
+generation_model: "mock by local default; replace for release"
+review_model: "mock by local default; replace for release"
+prompt_versions:
+  section: "section-v1"
+professional_rule_set_version: "record active ruleset before trial"
+report_template_versions: "record selected template/version per acceptance report"
+acceptance_dataset: "evaluation/acceptance/rc1 (synthetic only; real deidentified dataset pending)"
+status: "NOT_APPROVED_FOR_EXTERNAL_TRIAL"

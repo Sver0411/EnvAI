@@ -1,0 +1,71 @@
+services:
+  postgres:
+    image: pgvector/pgvector:pg16
+    env_file: ${ENV_FILE:-.env.production}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    expose: ["5432"]
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  redis:
+    image: redis:7-alpine
+    command: ["sh", "-c", "exec redis-server --requirepass \"$${REDIS_PASSWORD}\" --appendonly yes"]
+    volumes: ["redisdata:/data"]
+    expose: ["6379"]
+    restart: unless-stopped
+
+  backend:
+    build: {context: ., dockerfile: docker/backend.production.Dockerfile}
+    env_file: ${ENV_FILE:-.env.production}
+    environment:
+      RUN_MIGRATIONS: "false"
+      DATABASE_HOST_OVERRIDE: postgres
+      DATABASE_PORT_OVERRIDE: 5432
+    expose: ["8000"]
+    volumes:
+      - uploads:/app/uploads
+      - exporttmp:/tmp/envai-export
+    depends_on:
+      postgres: {condition: service_healthy}
+      migration: {condition: service_completed_successfully}
+    restart: unless-stopped
+    read_only: true
+    tmpfs: [/tmp]
+    security_opt: ["no-new-privileges:true"]
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/health/live')"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+
+  migration:
+    build: {context: ., dockerfile: docker/backend.production.Dockerfile}
+    env_file: ${ENV_FILE:-.env.production}
+    environment:
+      RUN_MIGRATIONS: "true"
+      DATABASE_HOST_OVERRIDE: postgres
+      DATABASE_PORT_OVERRIDE: 5432
+      UVICORN_WORKERS: "1"
+    command: ["alembic", "upgrade", "head"]
+    depends_on:
+      postgres: {condition: service_healthy}
+    restart: "no"
+
+  frontend:
+    build: {context: ., dockerfile: docker/frontend.production.Dockerfile}
+    ports: ["80:80", "443:443"]
+    volumes:
+      - ./deploy/tls:/etc/nginx/tls:ro
+    depends_on: [backend]
+    restart: unless-stopped
+
+volumes:
+  pgdata:
+  redisdata:
+  uploads:
+  exporttmp:

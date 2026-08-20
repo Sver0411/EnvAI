@@ -1,0 +1,3 @@
+[
+  {"id": "synthetic-critical-001", "expected_issues": [{"id": "wrong_company", "severity": "critical"}, {"id": "unsupported_number", "severity": "major"}], "detected_issues": [{"id": "wrong_company", "severity": "critical"}, {"id": "unsupported_number", "severity": "major"}]}
+]

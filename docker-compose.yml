@@ -1,0 +1,48 @@
+services:
+  postgres:
+    image: pgvector/pgvector:pg16
+    container_name: envai-postgres
+    env_file: backend/.env
+    ports:
+      - "5433:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U envai -d envai"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  backend:
+    build:
+      context: .
+      dockerfile: docker/backend.Dockerfile
+    env_file: backend/.env
+    environment:
+      DATABASE_HOST_OVERRIDE: postgres
+      DATABASE_PORT_OVERRIDE: 5432
+      RUN_MIGRATIONS: "true"
+      # Ollama runs on the macOS host; Docker Desktop exposes it here.
+      EMBEDDING_BASE_URL: http://host.docker.internal:11434/v1
+    ports:
+      - "8000:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    volumes:
+      # LOCAL_STORAGE_DIR=uploads resolves to /app/uploads in the image.
+      # Keep the development bind mount aligned with the host-side backend
+      # storage directory used by local scripts and seed data.
+      - ./backend/uploads:/app/uploads
+
+  frontend:
+    build:
+      context: .
+      dockerfile: docker/frontend.Dockerfile
+    ports:
+      - "8080:80"
+    depends_on:
+      - backend
+
+volumes:
+  pgdata:
