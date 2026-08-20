@@ -2,10 +2,9 @@ import os
 
 
 os.environ["DATABASE_URL"] = (
-    os.environ.get(
-        "TEST_DATABASE_URL",
-        "postgresql+psycopg://envai:envai_dev_password@localhost:5433/envai_test",
-    )
+    os.environ.get("TEST_DATABASE_URL")
+    or os.environ.get("DATABASE_URL")
+    or "postgresql+psycopg://envai:envai_dev_password@localhost:5433/envai_test"
 )
 # Tests must remain deterministic and must never spend a real model quota when
 # a developer's local .env enables an external AI provider.
